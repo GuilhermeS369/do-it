@@ -26,5 +26,5 @@ public interface TaskRepository extends MongoRepository<Task, String> {
      * @param userId the ID of the user to whom the tasks are assigned
      * @return a list of tasks assigned to the specified user
      */
-    List<Task> findByUserId(String userId);
+    List<Task> findByUser(String userId);
 }

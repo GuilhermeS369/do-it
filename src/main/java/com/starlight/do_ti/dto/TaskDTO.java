@@ -1,35 +1,29 @@
-package com.starlight.do_ti.domain;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.starlight.do_ti.dto;
+
+import com.starlight.do_ti.domain.Task;
 
 import java.time.LocalDateTime;
-@Document
-public class Task {
-    @Id
+
+public class TaskDTO {
     private String id;
     private String title;
     private String description;
     private LocalDateTime dueDate;
     private boolean completed;
-    @DBRef(lazy = true)
-    private User user;
+    private String userId;
 
-    // Construtor padrão
-    public Task() {
+    public TaskDTO(){
+
+    }
+    public TaskDTO(Task task) {
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.dueDate = task.getDueDate();
+        this.completed = task.isCompleted();
+        this.userId = task.getUser().getId();
     }
 
-    // Construtor com parâmetros
-    public Task(String id, String title, String description, LocalDateTime dueDate, boolean completed, User user) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.completed = completed;
-        this.user = user;
-    }
-
-    // Getters e Setters
     public String getId() {
         return id;
     }
@@ -62,22 +56,19 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-    public String getUserId() {
-        return getUser().getId();
-    }
-
     public boolean isCompleted() {
         return completed;
     }
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

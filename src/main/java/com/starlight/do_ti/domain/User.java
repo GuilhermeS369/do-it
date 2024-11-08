@@ -1,9 +1,11 @@
 package com.starlight.do_ti.domain;
 
-import com.starlight.do_ti.domain.Task;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "users")
@@ -11,22 +13,23 @@ public class User {
     @Id
     private String id;
     private String name;
+    private String username;
+    private String password;
     private String email;
-    private List<Task> tasks;
+    private List<String> tasksIds = new ArrayList<>();
 
     // Construtor padrão
     public User() {
     }
 
-    // Construtor com parâmetros
-    public User(String id, String name, String email, List<Task> tasks) {
-        this.id = id;
+    public User(String name, String username, String password, String email, List<String> tasksIds) {
         this.name = name;
+        this.username = username;
+        this.password = password;
         this.email = email;
-        this.tasks = tasks;
+        this.tasksIds = tasksIds;
     }
 
-    // Getters e Setters
     public String getId() {
         return id;
     }
@@ -43,6 +46,22 @@ public class User {
         this.name = name;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -51,11 +70,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<String> getTasksIds() {
+        return tasksIds;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTasksIds(List<String> tasks) {
+        this.tasksIds = tasksIds;
     }
 }

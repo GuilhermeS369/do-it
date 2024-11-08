@@ -1,10 +1,14 @@
 package com.starlight.do_ti.service;
 
 import com.starlight.do_ti.domain.Task;
+import com.starlight.do_ti.domain.User;
+import com.starlight.do_ti.dto.TaskDTO;
 import com.starlight.do_ti.repository.TaskRepository;
+import com.starlight.do_ti.repository.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +17,8 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository; // Repositório para interagir com o MongoDB
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Retrieve all tasks from the database.
@@ -39,8 +45,23 @@ public class TaskService {
      * @param task the task to be created
      * @return the created task
      */
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public TaskDTO createTask(Task task) {
+        Optional<User> userOptional = userRepository.findById(task.getUserId());
+        User user = userOptional.get();
+
+        // Define o usuário na tarefa
+        task.setUser(user);
+        task.setDueDate(LocalDateTime.now());
+        Task savedTask = taskRepository.save(task); // Salva a tarefa
+
+        // Adiciona o ID da tarefa ao usuário e salva o usuário
+        user.getTasksIds().add(savedTask.getId());
+        userRepository.save(user);
+        TaskDTO taskDTO = new TaskDTO();
+        //Transforma tarefa em tarefadto
+        BeanUtils.copyProperties(task, taskDTO);
+        return taskDTO;
+
     }
 
     /**

@@ -1,6 +1,7 @@
-package com.starlight.do_ti.controller;
+package com.starlight.do_ti.resource;
 
 import com.starlight.do_ti.domain.Task;
+import com.starlight.do_ti.dto.TaskDTO;
 import com.starlight.do_ti.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
-public class TaskController {
+public class TaskResource {
 
     @Autowired
     private TaskService taskService; // Você precisará de um serviço para gerenciar a lógica
@@ -33,9 +34,9 @@ public class TaskController {
 
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        Task createdTask = taskService.createTask(task);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    public ResponseEntity<TaskDTO> createTask(@RequestBody Task task) {
+        TaskDTO createdTaskDTO = taskService.createTask(task);
+        return new ResponseEntity<>(createdTaskDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
